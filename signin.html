@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandbox - Modern & Multipurpose Bootstrap 5 Template</title>
+  <link rel="shortcut icon" href="./img/favicon.png">
+  <link rel="stylesheet" href="./css/plugins.css">
+  <link rel="stylesheet" href="./css/style.css">
+
+
+</head>
+
+<body>
+  <style>
+    html,
+    body,
+    .container,
+    .row,
+    .col-lg-7 {
+      height: 100%;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    html,
+    body {
+      height: 100vh;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 350px;
+      /* set the width as per your requirement */
+      height: 600px;
+      /* set the height as per your requirement */
+    }
+
+    @media screen and (max-width: 600px) {
+      body {
+        width: 350px;
+      }
+    }
+  </style>
+  <div class="container text-center">
+    <div class="row">
+      <div class=" p-9 text-center">
+        <h2 class="mb-3">Welcome to
+          <a href="./profile.html"> <span style="color: #3f78e0;">TurboGrading</span></a>
+        </h2>
+        <p class="lead mb-6 text-start">Fill your email and password to sign in.</p>
+        <form class="text-start mb-3">
+          <div class="form-floating mb-4">
+            <input type="email" class="form-control" placeholder="Email" id="loginEmail" value="">
+            <label for="loginEmail">Email</label>
+          </div>
+          <div class="form-floating password-field mb-4">
+            <input type="password" class="form-control" placeholder="Password" id="loginPassword" value="">
+            <span class="password-toggle"><i class="uil uil-eye"></i></span>
+            <label for="loginPassword">Password</label>
+          </div>
+          <div class="mb-4">
+            <input class="form-check-input" type="checkbox" id="loggedin30" value="true">
+            <label class="form-check-label">Keep me logged in for 30 days</label>
+          </div>
+          <button class="btn btn-primary rounded-pill btn-login w-100 mb-2" id="sign_in">Sign In</button>
+        </form>
+        <!-- /form -->
+        <p class="mb-1"><a href="./forgot_password.html" class="hover">Forgot Password?</a></p>
+        <p class="mb-0">Don't have an account? <a href="./signup.html" class="hover">Sign up</a></p>
+
+        <!--/.social -->
+      </div>
+    </div>
+  </div>
+
+
+  <script src="./signin.js"></script>
+  <script src="./js/plugins.js"></script>
+  <script src="./js/theme.js"></script>
+</body>
+
+</html>

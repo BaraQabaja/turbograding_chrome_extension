@@ -1,0 +1,48 @@
+{
+  "name": "TurboGrading",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Automatically grade quizzes and assignments on D2L.",
+  "content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "http://localhost:8080/",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.mylearningspace.wlu.ca/*",
+        "*://*.conestoga.desire2learn.com/*",
+        "*://*.centennialcollege.ca/*"
+      
+      ],
+      "js": [
+        "./js/jquery-3.7.0.min.js"
+      ]
+    }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "icons": {
+    "16": "./img/icon16.png",
+    "48": "./img/icon48.png",
+    "128": "./img/icon128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "./img/icon16.png",
+      "48": "./img/icon48.png",
+      "128": "./img/icon128.png"
+    },
+    "default_popup": "signin.html",
+    "default_title": "TurboGrading"
+  }
+}
