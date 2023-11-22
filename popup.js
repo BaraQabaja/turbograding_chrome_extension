@@ -1,4 +1,4 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-console.log("ext loaded")
+console.log("ext loaded test")
 });
