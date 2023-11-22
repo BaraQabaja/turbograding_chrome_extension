@@ -42,7 +42,7 @@
       "48": "./img/icon48.png",
       "128": "./img/icon128.png"
     },
-    "default_popup": "signin.html",
+    "default_popup": "./signin.html",
     "default_title": "TurboGrading"
   }
 }

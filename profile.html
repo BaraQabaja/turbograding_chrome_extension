@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sandbox - Modern & Multipurpose Bootstrap 5 Template</title>
+    <link rel="shortcut icon" href="./img/favicon.png" />
+    <link rel="stylesheet" href="./css/plugins.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sandbox - Modern & Multipurpose Bootstrap 5 Template</title>
-  <link rel="shortcut icon" href="./img/favicon.png">
-  <link rel="stylesheet" href="./css/plugins.css">
-  <link rel="stylesheet" href="./css/style.css">
-
-
-</head>
-
-<body>
-  <style>
-    html,
+  <body style="width: 500px; height: 500px">
+    <style>
+      /* html,
     body,
     .container,
     .row,
@@ -36,37 +33,62 @@
 
     body {
       width: 350px;
-      /* set the width as per your requirement */
       height: 600px;
-      /* set the height as per your requirement */
+      
     }
 
     @media screen and (max-width: 600px) {
       body {
         width: 350px;
       }
-    }
-  </style>
-  <div class="container text-center">
-    <div class="row">
-      <div class=" p-9 text-center">
-        <h2 class="mb-3">Welcome to
-          <span style="color: #3f78e0;">TurboGrading</span>
-        </h2>
+    } */
+    </style>
+    <div class="container text-center ">
+      <div class="row">
+        <div class="p-5 text-center">
+          <h2 class="mb-3">
+            Welcome to
+            <span style="color: #3f78e0">TurboGrading</span>
+          </h2>
+          <div class="container mt-4">
 
+          <div id="profile" class="card">
+            <!-- User information -->
+            <div class="card-body">
+              <h4 class="card-title">bara qabaja</h4>
+              <p class="card-text">Email: bara.qabaja@gmail.com</p>
+            </div>
+        
+            <!-- Subscription details -->
+            <div class="card-body d-flex flex-column align-items-start">
+              <h4 class="card-title">Subscription Details</h4>
+              <p><strong>Plan:</strong> <span
+                class='badge bg-success'
+              > basic </span></p>
+              <p><strong>Exams Limit:</strong> 3 | <strong>Remaining:</strong> 3</p>
+              <p><strong>Assignments Limit:</strong> 3 | <strong>Remaining:</strong> 3</p>
+              <p><strong>Questions Limit:</strong> 10 | <strong>Remaining:</strong> 10</p>
+              <p><strong>Expiration Date:</strong> 5138-11-16</p>
+              <p><strong>Started:</strong> 1970-01-01</p>
+              <p><strong>Subscription Status:</strong> active</p>
+            </div>
+          </div>
+        </div>
 
-        <div id="profile"></div>
-        <button class="btn btn-primary rounded-pill btn-login w-100 mb-2" id="sign_out">Sign Out</button>
+          <button
+            class="btn btn-primary rounded-pill btn-login w-100 mb-2 mt-4"
+            id="sign_out"
+          >
+            Sign Out
+          </button>
 
-        <!--/.social -->
+          <!--/.social -->
+        </div>
       </div>
     </div>
-  </div>
 
-
-  <script src="./profile.js"></script>
-  <script src="./js/plugins.js"></script>
-  <script src="./js/theme.js"></script>
-</body>
-
+    <script src="./profile.js"></script>
+    <script src="./js/plugins.js"></script>
+    <script src="./js/theme.js"></script>
+  </body>
 </html>

@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     chrome.runtime.sendMessage({ message: 'userStatus' },
         function (response) {
+       
             if (response.message == 'success') {
 
                 /*  document.getElementById('name').innerText =
@@ -45,49 +46,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    /*
+   
     
         // Fetch the stored token and user data from chrome storage
-        chrome.storage.local.get(['token', 'user'], function (result) {
-            const token = result.token;
-            const user = result.user;
+        // chrome.storage.local.get(['token', 'user'], function (result) {
+        //     const token = result.token;
+        //     const user = result.user;
     
-            console.log("token:" + token);
+        //     console.log("token:" + token);
     
-            if (token && user) {
-                // Display user profile in the extension
-                const profileElement = document.getElementById('profile');
+        //     if (token && user) {
+        //         // Display user profile in the extension
+        //         const profileElement = document.getElementById('profile');
     
-                if (profileElement) {
-                    profileElement.innerHTML = `
-                        <h2>Welcome ${user.firstName} ${user.lastName}!</h2> 
-                    `;
-                }
+        //         if (profileElement) {
+        //             profileElement.innerHTML = `
+        //                 <h2>Welcome ${user.firstName} ${user.lastName}!</h2> 
+        //             `;
+        //         }
     
-                try {
-                    // Fetch user profile from your server
-                    fetch('http://localhost:8080/users/profile', {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(userData => {
-                            // Store updated user data in Chrome storage
-                            chrome.storage.local.set({ 'user': userData }, function () {
-                                console.log('User data is updated in local storage');
-                            });
-                        }).catch(function (e) {
-                            console.error('Error:' + e);
-                            alert(e);
-                        });
-                } catch (err) {
-                    console.error('An error occurred:', err);
-                    alert('An error occurred:', err);
-                }
-            } else {
-                // User is not logged in. You can redirect them to your login page.
-                chrome.browserAction.setPopup({ popup: 'signin.html' });
-            }
-        });*/
+        //         try {
+        //             // Fetch user profile from your server
+        //             fetch('http://localhost:8080/users/profile', {
+        //                 headers: {
+        //                     'Authorization': `Bearer ${token}`
+        //                 }
+        //             })
+        //                 .then(response => response.json())
+        //                 .then(userData => {
+        //                     // Store updated user data in Chrome storage
+        //                     chrome.storage.local.set({ 'user': userData }, function () {
+        //                         console.log('User data is updated in local storage');
+        //                     });
+        //                 }).catch(function (e) {
+        //                     console.error('Error:' + e);
+        //                     alert(e);
+        //                 });
+        //         } catch (err) {
+        //             console.error('An error occurred:', err);
+        //             alert('An error occurred:', err);
+        //         }
+        //     } else {
+        //         // User is not logged in. You can redirect them to your login page.
+        //         chrome.browserAction.setPopup({ popup: 'signin.html' });
+        //     }
+        // });
 });
