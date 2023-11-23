@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sandbox - Modern & Multipurpose Bootstrap 5 Template</title>
+    <link rel="shortcut icon" href="./img/favicon.png" />
+    <link rel="stylesheet" href="./css/plugins.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body style="width: 500px; height: 500px">
+
+    <div class="container mt-5">
+        <h1 class="mb-4">Subscription Log</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Subscribed At</th>
+                        <th class="text-center">Subscription Expiration</th>
+                        <th class="text-center">Plan</th>
+                        <th class="text-center">Price</th>
+                    </tr>
+                </thead>
+                <tbody id="subscriptionTable">
+                    <!-- {responseData.map((item)=>{
+                        const { endDate, startDate } = item;
+                        console.log(typeof startDate);
+                        const dateStart = new Date(startDate).toLocaleDateString();
+                        const dateEnd = new Date(endDate).toLocaleDateString();
+                        console.log(typeof dateStart);
+                        return <tr>
+                            <td class="text-center">{dateStart == '1/1/1970' ? '-' : dateStart}</td>
+                            <td class="text-center">{dateEnd == '11/16/5138' ? '-' : dateEnd}</td>
+                            <td class="text-center">{item.plan.name}</td>
+                            <td class="text-center">{item.plan.price} {item.plan.currency === 'usd' ? '$' : item.plan.currency}</td>
+                        </tr>
+                    })} -->
+
+                    <!-- Sample data (replace this with the dynamic rendering) -->
+                    <!-- <tr>
+                        <td class="text-center">2023-11-20</td>
+                        <td class="text-center">5138-11-16</td>
+                        <td class="text-center">Basic Plan</td>
+                        <td class="text-center">$10</td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="./subscriptionsLog.js"></script>
+    <script src="./js/plugins.js"></script>
+    <script src="./js/theme.js"></script>
+
+</body>
+</html>
