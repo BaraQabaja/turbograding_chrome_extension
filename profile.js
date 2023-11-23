@@ -1,94 +1,104 @@
-document.addEventListener('DOMContentLoaded', function () {
+console.log("profile.js page");
+chrome.runtime.sendMessage({ action: "userInfo" }, function (response) {
+  console.log("user info response received ....");
+  console.log(response);
 
-    var signOutButton = document.getElementById("sign_out");
-    if (signOutButton) {
-        signOutButton.addEventListener('click', async function () {
-            chrome.runtime.sendMessage({ message: 'logout' },
-                function (response) {
-                    if (response === 'success')
-                        window.location.replace('./signin.html');
-                }
-            );
-            /*  // Clear the token and user data from storage
-              chrome.storage.local.remove(['token', 'user'], function () {
-                  console.log('Token and User data are cleared from local storage');
-              });
-    
-              // Switch back to sign-in page
-              chrome.browserAction.setPopup({ popup: 'signin.html' });
-    
-              // Close the popup window immediately
-              window.close();*/
-        });
-    }
+  if (response.status == "success") {
+    const userInfo = response.data.profile;
+    /*
+planName
+planNumberOfAssignmentsLimit
+planNumberOfExamsLimit
+planNumberOfQuestionsLimit
+remaining_assignments
+remaining_exams
+remaining_questions
+subscriptionEndDate
+subscriptionStartDate
+subscriptionStatus
+userBio
+userEmail
+userFirstName
+userImg
+userJoinDate
+userLastName
+*/
+    const userNameElement = document.querySelector("#username");
+    const userEmailElement = document.querySelector("#email");
+    const planType = document.querySelector("#planType");
 
+    const examsLimit = document.querySelector("#examsLimit");
+    const examsRemain = document.querySelector("#examsRemain");
 
+    const assignmentsLimit = document.querySelector("#assignmentsLimit");
+    const assignmentsRemain = document.querySelector("#assignmentsRemain");
 
-    chrome.runtime.sendMessage({ message: 'userStatus' },
-        function (response) {
-       
-            if (response.message == 'success') {
+    const questionsLimit = document.querySelector("#questionsLimit");
+    const questionsRemain = document.querySelector("#questionsRemain");
 
-                /*  document.getElementById('name').innerText =
-                      response.user_info;*/
-       
-                const profileElement = document.getElementById('profile');
-                console.log(JSON.stringify(response));
-                if (profileElement) {
-                    profileElement.innerHTML = `
-                    <h2>Welcome ${response.user_info.loginEmail} !</h2> 
-                `;
-                }
+    const subscriptionEnd = document.querySelector("#subscriptionEnd");
+    const subscriptionStart = document.querySelector("#subscriptionStart");
+    const subscriptionStatus = document.querySelector("#subscriptionStatus");
+    // Add more elements as needed
 
-            }
-        }
-    );
+    // Update the content
+    userNameElement.textContent = `${userInfo.userFirstName} ${userInfo.userLastName}`;
+    userEmailElement.textContent = userInfo.userEmail;
 
+    planType.textContent = userInfo.planName;
 
+    examsLimit.textContent = userInfo.planNumberOfExamsLimit;
+    examsRemain.textContent = userInfo.remaining_exams;
 
-   
-    
-        // Fetch the stored token and user data from chrome storage
-        // chrome.storage.local.get(['token', 'user'], function (result) {
-        //     const token = result.token;
-        //     const user = result.user;
-    
-        //     console.log("token:" + token);
-    
-        //     if (token && user) {
-        //         // Display user profile in the extension
-        //         const profileElement = document.getElementById('profile');
-    
-        //         if (profileElement) {
-        //             profileElement.innerHTML = `
-        //                 <h2>Welcome ${user.firstName} ${user.lastName}!</h2> 
-        //             `;
-        //         }
-    
-        //         try {
-        //             // Fetch user profile from your server
-        //             fetch('http://localhost:8080/users/profile', {
-        //                 headers: {
-        //                     'Authorization': `Bearer ${token}`
-        //                 }
-        //             })
-        //                 .then(response => response.json())
-        //                 .then(userData => {
-        //                     // Store updated user data in Chrome storage
-        //                     chrome.storage.local.set({ 'user': userData }, function () {
-        //                         console.log('User data is updated in local storage');
-        //                     });
-        //                 }).catch(function (e) {
-        //                     console.error('Error:' + e);
-        //                     alert(e);
-        //                 });
-        //         } catch (err) {
-        //             console.error('An error occurred:', err);
-        //             alert('An error occurred:', err);
-        //         }
-        //     } else {
-        //         // User is not logged in. You can redirect them to your login page.
-        //         chrome.browserAction.setPopup({ popup: 'signin.html' });
-        //     }
-        // });
+    assignmentsLimit.textContent = userInfo.planNumberOfAssignmentsLimit;
+    assignmentsRemain.textContent = userInfo.remaining_assignments;
+
+    questionsLimit.textContent = userInfo.planNumberOfQuestionsLimit;
+    questionsRemain.textContent = userInfo.remaining_questions;
+
+    subscriptionEnd.textContent = userInfo.subscriptionEndDate;
+    subscriptionStart.textContent = userInfo.subscriptionStartDate;
+    subscriptionStatus.innerHTML = ` <strong>Subscription Status: </strong>
+    <span class='badge ${
+      userInfo.subscriptionStatus == "active" ? "bg-success" : "bg-danger"
+    }' 
+      >${userInfo.subscriptionStatus}
+    </span>`;
+    //
+  } else {
+    let errorDiv = document.getElementById("error");
+    errorDiv.style.display = "block";
+    errorDiv.innerHTML = response.data.title;
+  }
 });
+
+document.getElementById("subscriptionsLog").addEventListener("click", function () {
+  chrome.runtime.sendMessage({ action: "navigateToSubscriptionsLogPage" }, function (response) {
+
+    window.location.href = "./subscriptionsLog.html";
+
+
+  });
+});
+
+document.getElementById("signout").addEventListener("click", function () {
+  chrome.runtime.sendMessage({ action: "signout" }, function (response) {
+    console.log("profile page, logout response");
+    console.log(response);
+    if (response.status == "success") {
+      window.location.href = "./signin.html";
+    }
+  });
+});
+
+document
+  .getElementById("subscriptionsLog")
+  .addEventListener("click", function () {
+    chrome.runtime.sendMessage(
+      { action: "subscriptionsLog" },
+      function (response) {
+        console.log("profile page, subscriptions Log response");
+        console.log(response);
+      }
+    );
+  });

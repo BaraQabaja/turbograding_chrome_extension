@@ -10,7 +10,9 @@
     "storage",
     "http://localhost:8080/",
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "https://turbograding-api-ae8e0a55a59d.herokuapp.com/*"
+
   ],
   "content_scripts": [
     {

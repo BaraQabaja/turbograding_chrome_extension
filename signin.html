@@ -53,15 +53,16 @@
               <span style="color: #3f78e0">TurboGrading</span></a
             >
           </h2>
-          <div id="myDiv">
-          hi
-          </div>
+
           <p class="lead mb-6 text-start">
             Fill your email and password to sign in.
           </p>
-          <form class="text-start mb-3">
+          <form   class="text-start mb-3">
+            <div style="display:none" id="error"  class="alert alert-danger" role="alert">
+            </div>
             <div class="form-floating mb-4">
               <input
+              required
                 type="email"
                 class="form-control"
                 placeholder="Email"
@@ -72,11 +73,12 @@
             </div>
             <div class="form-floating password-field mb-4">
               <input
+              required
                 type="password"
                 class="form-control"
                 placeholder="Password"
                 id="loginPassword"
-                value=""
+                
               />
               <span class="password-toggle"><i class="uil uil-eye"></i></span>
               <label for="loginPassword">Password</label>
@@ -87,7 +89,8 @@
           </div> -->
             <button
               class="btn btn-primary rounded-pill btn-login w-100 mb-2"
-              id="sign_in"
+              id="signin"
+              type="submit"
             >
               Sign In
             </button>

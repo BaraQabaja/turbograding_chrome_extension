@@ -1,32 +1,138 @@
 // import { URL } from "./server_url";
+let user_signed_in = false;
 
 const URL = "https://turbograding-api-ae8e0a55a59d.herokuapp.com";
 
-//Function to detect the part of URL and perform action
-// function checkURL(url, tabId) {
-//   // Check if URL contains 'example.com'
-//   if (url.includes('/d2l/le/activities/iterator')) {
+const flip_user_status = (signIn, user_info) => {
+  if (signIn) {
+    return fetch(
+      `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user_info.loginEmail,
+          password: user_info.loginPassword,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((res) => {
+        return new Promise((resolve) => {
+          resolve(res);
 
-//     // Create turboGrading for assignments page
-//     //createButton("assignment");
-//     chrome.tabs.executeScript(tabId, { file: 'turbograding.js' });
-//   } else if (url.includes('/quizzing/')) {
-//     // Create turboGrading for quiz page
+          // chrome.storage.local.set({ token: res.token });
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+};
 
-//     //For Manifest V3:
-//     /*chrome.scripting.executeScript({
-//       target: { tabId: tabId },
-//       files: ['turbograding.js']
-//     });*/
+const get_user_info = () => {
+  // Wrap the fetch operation in a promise
+  return new Promise((resolve, reject) => {
+    // Retrieve the token from local storage
+    chrome.storage.local.get("token", function (result) {
+      const storedToken = result.token;
+      if (!storedToken) {
+        // Handle the case where the token is not found
+        reject("No token stored");
+        return;
+      }
 
-//     chrome.tabs.executeScript(tabId, { file: 'turbograding.js' });
+      // Make the fetch request with the retrieved token
+      fetch(
+        `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/profile/get-personal-info`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
 
-//     // createButton("quiz");
+const signout = () => {
+  // Wrap the fetch operation in a promise
+  return new Promise((resolve, reject) => {
+    // Retrieve the token from local storage
+    chrome.storage.local.get("token", function (result) {
+      const storedToken = result.token;
+      if (!storedToken) {
+        // Handle the case where the token is not found
+        reject("No token stored");
+        return;
+      }
 
-//   }
-// }
+      // Make the fetch request with the retrieved token
+      fetch(
+        `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/auth/logout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) =>{
+const subscriptionsLog = () => {
+  // Wrap the fetch operation in a promise
+  return new Promise((resolve, reject) => {
+    // Retrieve the token from local storage
+    chrome.storage.local.get("token", function (result) {
+      const storedToken = result.token;
+      if (!storedToken) {
+        // Handle the case where the token is not found
+        reject("No token stored");
+        return;
+      }
+
+      // Make the fetch request with the retrieved token
+      fetch(
+        `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/profile/get-user-subscriptions`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "signup") {
     // Replace 'https://www.yourwebsite.com/signup' with the actual URL of your signup page
     chrome.tabs.create({ url: "http://localhost:3000/register-1" });
@@ -36,177 +142,90 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) =>{
     chrome.tabs.create({ url: "http://localhost:3000/forget-pass" });
   }
 
+  if (request.action === "signin") {
+    console.log("request.payload ===> ", request.payload);
+    flip_user_status(true, request.payload)
+      .then((res) => {
+        if (res.status == "success") {
+          chrome.storage.local.set({ token: res.token }, function () {
+            if (chrome.runtime.lastError) {
+              console.error(
+                "Error setting local storage:",
+                chrome.runtime.lastError
+              );
+            } else {
+              console.log("Token successfully set in local storage", res.token);
+              chrome.browserAction.setPopup({ popup: "./profile.html" });
+            }
+          });
+        }
+        console.log("response in background ===> ");
 
-  if (request.action === 'apiResponse') {
-    console.log('Background received API response:', request.data);
-    // You can process the API response here or send it to the popup script
-    console.log("hiiiiii ",request.data)
-    console.log(request.data)
+        console.log(res);
+        return sendResponse(res);
+      })
+      .catch((error) => console.error(error));
 
-    sendResponse({ message: 'API response received in background!' });
-  }
-  // if (request.action === "signin") {
-    
-  //     console.log("request.payload ===> ", request.payload);
-  //     flip_user_status(true, request.payload).then((res)=>{
-  //       console.log("The res is ===> ");
-
-  //       console.log(res);
-  //       console.log(sendResponse({
-  //         success: true,
-  //         message: "success",
-  //         userData: {},
-  //       }))
-       
-
-  //       if(res.status=='success'){
-  //          chrome.browserAction.setPopup({ popup: "profile.html" });
-
-  //       }
-  
-
-  //     // Send the response to the profile script
-  //     // sendResponse({
-  //     //   message: res,
-  //     //   userStatus: 'userStatus'
-  //     // })
-  //     }) .catch((error) => {
-  //       console.error(error);
-  //       sendResponse({
-  //         success: false,
-  //         message: "error",
-  //         error: error.message,
-  //       });
-
-  //     });
-   
-  //     sendResponse({
-  //       success: false,
-  //       message: "error",
-  //       error: error.message,
-  //     });
-  //     return true
-  // }
-
-
-
-     else if (request.action === "logout") {
-    flip_user_status(false, null)
-      .then((res) => sendResponse(res))
+    return true;
+  } else if (request.action === "signout") {
+    signout()
+      .then((res) => {
+        if (res.status == "success") {
+          chrome.storage.local.remove("token", function () {
+            if (chrome.runtime.lastError) {
+              console.error(
+                "Error removing token from local storage:",
+                chrome.runtime.lastError
+              );
+            } else {
+              console.log("Token removed from local storage");
+              chrome.browserAction.setPopup({ popup: "./signin.html" });
+            }
+          });
+        }
+        return sendResponse(res);
+      })
       .catch((err) => console.log(err));
     return true;
+  } else if (request.action === "subscriptionsLog") {
+    subscriptionsLog()
+      .then((res) => {
+        if (res.status == "success") {
+          chrome.browserAction.setPopup({ popup: "./subscriptionsLog.html" });
+          console.log('subscriptions log (background) ===> ',res)
+        }
+        return sendResponse(res);
+      })
+      .catch((err) => console.log(err));
+    return true;
+  } else if (request.action === "userInfo") {
+    get_user_info()
+      .then((res) => {
+        console.log("response of user info in background ===> ");
+
+        console.log(res);
+        return sendResponse(res);
+      })
+      .catch((error) => console.error(error));
+
+    return true;
   }
-  // else if (request.action === 'userStatus') {
-  //   is_user_signed_in()
-  //     .then(res => {
-  //       sendResponse({
-  //         message: 'success',
-  //         userStatus: 'userStatus',
-  //         token: res.token,
-  //         user_info: res.user_info
-  //       });
-  //     })
-  //     .catch(err => console.log(err));
-  //   return true;
-  // }
+  else if(request.action=='navigateToSubscriptionsLogPage'){
+    chrome.browserAction.setPopup({ popup: "./subscriptionsLog" });
 
+  }
+  else if(request.action=='subscriptionsLog'){
+    subscriptionsLog()
+    .then((res) => {
+  
+      return sendResponse(res);
+    })
+    .catch((error) => console.error(error));
+
+  return true;
+  }
   // sendBodyToExtension();
-
 });
-
-chrome.runtime.onMessage.addListener(function (
-  request,
-  sender,
-  sendResponse
-) {});
-
-// const flip_user_status=(signIn, user_info)=>{
-//   if (signIn) {
-//     return fetch(
-//       `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/auth/login`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           email: user_info.loginEmail,
-//           password: user_info.loginPassword,
-//         }),
-//       }
-//     )
-//       .then((response) => response.json())
-//       .then((res) => {
-//         if (!res.token) {
-//           resolve("fail");
-//         } else {
-//           const token = res.token;
-//           // const status=res.status;
-//           // const userInfo=res.userInfo;
-         
-//           return new Promise((resolve, reject) => {
-//             chrome.storage.local.set(
-//               { token: token, userStatus: signIn, user_info: user_info },
-//               function (response) {
-//                 if (chrome.runtime.lastError) {
-//                   reject(chrome.runtime.lastError);
-//                 } else {
-//                   console.log("Token is stored in local storage");
-//                   // user_signed_in = signIn;
-                 
-//                   resolve(res);
-//                 }
-
-//                 // if (chrome.runtime.lastError) resolve('fail');
-//               }
-//             );
-//           });
-//         }
-//       })
-//       .catch((err) => console.log(err));
-//   } else if (!signIn) {
-//     // fetch the logout route
-//     return new Promise((resolve) => {
-//       chrome.storage.local.get(
-//         ["token", "userStatus", "user_info"],
-//         function (response) {
-//           if (chrome.runtime.lastError) resolve("fail");
-
-//           if (response.userStatus === undefined) resolve("fail");
-
-//           fetch(
-//             `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/auth/logout`,
-//             {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/json",
-//               },
-//               body: JSON.stringify({
-//                 token: response.token,
-//               }),
-//             }
-//           )
-//             .then((response) => response.json())
-//             .then((res) => {
-//               console.log("USER RESPONSE ===> ", res);
-//               if (res.status !== 200) resolve("fail");
-
-//               chrome.storage.local.set(
-//                 { token: "", userStatus: signIn, user_info: {} },
-//                 function (response) {
-//                   if (chrome.runtime.lastError) resolve("fail");
-
-//                   user_signed_in = signIn;
-//                   resolve("success");
-//                 }
-//               );
-//             })
-//             .catch((err) => console.log(err));
-//         }
-//       );
-//     });
-//   }
-// }
 
 function is_user_signed_in() {
   return new Promise((resolve) => {

@@ -43,7 +43,7 @@
       }
     } */
     </style>
-    <div class="container text-center ">
+    <div class="container text-center">
       <div class="row">
         <div class="p-5 text-center">
           <h2 class="mb-3">
@@ -51,33 +51,56 @@
             <span style="color: #3f78e0">TurboGrading</span>
           </h2>
           <div class="container mt-4">
-
-          <div id="profile" class="card">
-            <!-- User information -->
-            <div class="card-body">
-              <h4 class="card-title">bara qabaja</h4>
-              <p class="card-text">Email: bara.qabaja@gmail.com</p>
-            </div>
-        
-            <!-- Subscription details -->
-            <div class="card-body d-flex flex-column align-items-start">
-              <h4 class="card-title">Subscription Details</h4>
-              <p><strong>Plan:</strong> <span
-                class='badge bg-success'
-              > basic </span></p>
-              <p><strong>Exams Limit:</strong> 3 | <strong>Remaining:</strong> 3</p>
-              <p><strong>Assignments Limit:</strong> 3 | <strong>Remaining:</strong> 3</p>
-              <p><strong>Questions Limit:</strong> 10 | <strong>Remaining:</strong> 10</p>
-              <p><strong>Expiration Date:</strong> 5138-11-16</p>
-              <p><strong>Started:</strong> 1970-01-01</p>
-              <p><strong>Subscription Status:</strong> active</p>
+            <div id="profile" class="card">
+              <!-- User information -->
+              <div class="card-body" style="padding: 0.7rem">
+                <h4 class="card-title" id="username">-</h4>
+                <p class="card-text" id="email">-</p>
+              </div>
+              <div style="display:none" id="error"  class="alert alert-danger" role="alert">
+              </div>
+              <!-- Subscription details -->
+              <div class="card-body d-flex flex-column align-items-start">
+                <h4 class="card-title">Subscription Details</h4>
+                <p><strong>Plan:</strong><span id="planType">-</span></p>
+                <p>
+                  <strong>Exams Limit: </strong><span id="examsLimit">-</span> |
+                  <strong>Remaining: </strong><span id="examsRemain">-</span>
+                </p>
+                <p>
+                  <strong>Assignments Limit: </strong
+                  ><span id="assignmentsLimit">-</span> |
+                  <strong>Remaining: </strong
+                  ><span id="assignmentsRemain">-</span>
+                </p>
+                <p>
+                  <strong>Questions Limit: </strong
+                  ><span id="questionsLimit">-</span> |
+                  <strong>Remaining: </strong
+                  ><span id="questionsRemain">-</span>
+                </p>
+                <p>
+                  <strong>Expiration Date: </strong
+                  ><span id="subscriptionEnd">-</span>
+                </p>
+                <p>
+                  <strong>Started: </strong
+                  ><span id="subscriptionStart">-</span>
+                </p>
+                <p id="subscriptionStatus">
+                  <strong>Subscription Status: </strong>
+                  <span>-</span>
+                </p>
+                <button class="btn btn-info rounded-pill btn-subscriptions w-50 mb-2 mt-4" id="subscriptionsLog">
+                  Subscriptions Log
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
           <button
             class="btn btn-primary rounded-pill btn-login w-100 mb-2 mt-4"
-            id="sign_out"
+            id="signout"
           >
             Sign Out
           </button>
