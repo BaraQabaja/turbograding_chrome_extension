@@ -39,3 +39,22 @@ chrome.runtime.sendMessage({ action: "subscriptionsLog" }, function (response) {
     // Handle error or empty response
   }
 });
+
+
+document.getElementById("navigateToProfilePage").addEventListener("click", function () {
+  chrome.runtime.sendMessage({ action: "navigateToProfilePage" }, function (response) {
+
+    window.location.href = "./profile.html";
+
+
+  });
+});
+
+document.getElementById("navigateToSettingPage").addEventListener("click", function () {
+  chrome.runtime.sendMessage({ action: "navigateToSettingPage" }, function (response) {
+
+    window.location.href = "./setting.html";
+
+
+  });
+});

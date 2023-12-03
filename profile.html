@@ -43,9 +43,71 @@
       }
     } */
     </style>
+
     <div class="container text-center">
       <div class="row">
         <div class="p-5 text-center">
+          <!-- Navbar -->
+          <nav
+            class="navbar navbar-expand-lg navbar-light bg-light mb-5"
+            style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)"
+          >
+            <!-- Your existing navbar content -->
+
+            <!-- Button to trigger the modal -->
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#sub"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </nav>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="sub"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="pageModalLabel"
+            aria-hidden="true"
+          >
+            <div
+              class="modal-dialog modal-dialog-centered"
+              style="max-width: 500px; max-height: 500px"
+            >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title" id="pageModalLabel">TurboGrading</h6>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <!-- List of page names and buttons -->
+                  <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="navbar-nav flex-column w-100">
+                      <a
+                      id="navigateToProfilePage" 
+                      class="nav-link btn btn-block w-100" href="#"
+                        >Profile</a
+                      >
+                      <a id="navigateToSettingPage" class="nav-link btn btn-block w-100" href="#"
+                      >Setting</a
+                    >
+                      <!-- <a class="nav-link btn btn-outline-secondary btn-block w-100" href="#" >Page 2</a> -->
+                      <!-- Add more links for additional pages -->
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
           <h2 class="mb-3">
             Welcome to
             <span style="color: #3f78e0">TurboGrading</span>
@@ -57,8 +119,12 @@
                 <h4 class="card-title" id="username">-</h4>
                 <p class="card-text" id="email">-</p>
               </div>
-              <div style="display:none" id="error"  class="alert alert-danger" role="alert">
-              </div>
+              <div
+                style="display: none"
+                id="error"
+                class="alert alert-danger"
+                role="alert"
+              ></div>
               <!-- Subscription details -->
               <div class="card-body d-flex flex-column align-items-start">
                 <h4 class="card-title">Subscription Details</h4>
@@ -91,7 +157,10 @@
                   <strong>Subscription Status: </strong>
                   <span>-</span>
                 </p>
-                <button class="btn btn-info rounded-pill btn-subscriptions w-50 mb-2 mt-4" id="subscriptionsLog">
+                <button
+                  class="btn btn-info rounded-pill btn-subscriptions w-50 mb-2 mt-4"
+                  id="subscriptionsLog"
+                >
                   Subscriptions Log
                 </button>
               </div>
@@ -110,6 +179,7 @@
       </div>
     </div>
 
+    <script src="./js/bootstrap.min.js"></script>
     <script src="./profile.js"></script>
     <script src="./js/plugins.js"></script>
     <script src="./js/theme.js"></script>
