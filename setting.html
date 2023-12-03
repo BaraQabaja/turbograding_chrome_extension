@@ -11,7 +11,7 @@
   </head>
 
   <body style="width: 500px; height: 500px">
-    <div class="container mt-0">
+    <div class="container mb-0">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
         <!-- Your existing navbar content -->
@@ -61,7 +61,8 @@
                     id="navigateToProfilePage"
                     >Profile</a
                   >
-                  <a id="navigateToSettingPage" class="nav-link btn btn-block w-100" href="#"
+                  <a                     id="navigateToSettingPage"
+                  class="nav-link btn btn-block w-100" href="#"
                   >Setting</a
                 >
                   <!-- <a class="nav-link btn btn-outline-secondary btn-block w-100" href="#" >Page 2</a> -->
@@ -72,26 +73,58 @@
           </div>
         </div>
       </div>
-      <h1 class="mb-4">Subscription Log</h1>
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead class="table-dark">
-            <tr>
-              <th class="text-center">Subscribed At</th>
-              <th class="text-center">Subscription Expiration</th>
-              <th class="text-center">Plan</th>
-              <th class="text-center">Price</th>
-            </tr>
-          </thead>
-          <tbody id="subscriptionTable"></tbody>
-        </table>
+      <h3 class="mb-4">Account Settings</h3>
+
+  <!-- Update Username Section -->
+  <div id="updateUsernameSection" >
+    <p class="mb-3">Update your username with the following form:</p>
+    <button class="btn btn-primary me-1" id="updateUsernameButton">Update Username</button>
+
+  <!-- Update Username Form -->
+    <form id="updateUsernameForm" class="mb-1" style="display:none">
+      <div class="mb-3">
+        <label for="first_name" class="form-label">First Name</label>
+        <input required type="text" class="form-control" id="first_name">
       </div>
+      <div class="mb-3">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input required type="text" class="form-control" id="last_name">
+      </div>
+      <button type="submit" class="btn btn-primary me-2">Save Username</button>
+      <button type="button" class="btn btn-secondary" id="cancelUpdateUsername">Cancel</button>
+    </form>
+
+    <div id="updateUsernameMessage" class="alert" role="alert"></div>
+  </div>
+
+  <!-- Update Password Section -->
+  <div id="updatePasswordSection" class="mb-3">
+    <p class="mb-3">Change your password using the form below:</p>
+    <button class="btn btn-primary" id="updatePasswordButton">Update Password</button>
+
+  <!-- Update Password Form -->
+    <form id="updatePasswordForm" style="display:none">
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">New Password</label>
+        <input type="password" class="form-control" id="newPassword">
+      </div>
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="confirmPassword">
+      </div>
+      <button type="submit" class="btn btn-primary me-2">Save changes</button>
+      <button type="button" class="btn btn-secondary" id="cancelUpdatePassword">Cancel</button>
+    </form>
+
+    <div id="updatePasswordMessage" class="alert" role="alert"></div>
+  </div>
+    
     </div>
 
     <script src="./js/jquery-3.7.0.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/plugins.js"></script>
     <script src="./js/theme.js"></script>
-    <script src="./subscriptionsLog.js"></script>
+    <script src="./setting.js"></script>
   </body>
 </html>

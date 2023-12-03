@@ -1,12 +1,43 @@
 // import { URL } from "./server_url";
 let user_signed_in = false;
 
-const URL = "https://turbograding-api-ae8e0a55a59d.herokuapp.com";
+const URL_Production = "https://turbograding-api-ae8e0a55a59d.herokuapp.com";
 
+//Function to detect the part of URL and perform action
+function checkURL(url, tabId) {
+  // Check if URL contains 'example.com'
+  console.log(" i am in checkURL, the url is ==> ",url)
+  if (url.includes('/d2l/le/activities/iterator')) {
+
+    // Create turboGrading for assignments page
+    //createButton("assignment");
+    chrome.tabs.executeScript(tabId, { file: 'turbograding.js' });
+  } else if (url.includes('/Grade')) {
+    // Create turboGrading for quiz page
+
+    //For Manifest V3:
+    /*chrome.scripting.executeScript({
+      target: { tabId: tabId },
+      files: ['turbograding.js']
+    });*/
+console.log("Go to turbograding.js")
+    chrome.tabs.executeScript(tabId, { file: './turbograding.js' });
+
+    // createButton("quiz");
+
+  }
+}
+
+
+
+//! APIs handling functions
+
+
+//Login Function
 const flip_user_status = (signIn, user_info) => {
   if (signIn) {
     return fetch(
-      `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/auth/login`,
+      `${URL_Production}/api/auth/login`,
       {
         method: "POST",
         headers: {
@@ -30,6 +61,7 @@ const flip_user_status = (signIn, user_info) => {
   }
 };
 
+//Profile Info (user info) Function
 const get_user_info = () => {
   // Wrap the fetch operation in a promise
   return new Promise((resolve, reject) => {
@@ -44,7 +76,7 @@ const get_user_info = () => {
 
       // Make the fetch request with the retrieved token
       fetch(
-        `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/profile/get-personal-info`,
+        `${URL_Production}/api/profile/get-personal-info`,
         {
           method: "GET",
           headers: {
@@ -64,6 +96,49 @@ const get_user_info = () => {
   });
 };
 
+//
+const sendUserInfo=(data)=>{
+console.log("send user info function")
+console.log("sendUserInfo received info ===> ")
+console.log(data)
+
+ // Wrap the fetch operation in a promise
+ return new Promise((resolve, reject) => {
+  // Retrieve the token from local storage
+  chrome.storage.local.get("token", function (result) {
+    const storedToken = result.token;
+    if (!storedToken) {
+      // Handle the case where the token is not found
+      reject("No token stored");
+      return;
+    }
+
+    // Make the fetch request with the retrieved token
+    fetch(
+      `${URL_Production}/api/user/grading-exam`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+         
+        },
+        body: JSON.stringify(data),
+      }
+    )
+      .then((response) => response.json())
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+});
+}
+
+
+//Signout Function
 const signout = () => {
   // Wrap the fetch operation in a promise
   return new Promise((resolve, reject) => {
@@ -78,7 +153,7 @@ const signout = () => {
 
       // Make the fetch request with the retrieved token
       fetch(
-        `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/auth/logout`,
+        `${URL_Production}/api/auth/logout`,
         {
           method: "POST",
           headers: {
@@ -98,6 +173,8 @@ const signout = () => {
   });
 };
 
+
+//User subscriptions Function
 const subscriptionsLog = () => {
   // Wrap the fetch operation in a promise
   return new Promise((resolve, reject) => {
@@ -112,13 +189,95 @@ const subscriptionsLog = () => {
 
       // Make the fetch request with the retrieved token
       fetch(
-        `https://turbograding-api-ae8e0a55a59d.herokuapp.com/api/profile/get-user-subscriptions`,
+        `${URL_Production}/api/profile/get-user-subscriptions`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${storedToken}`,
           },
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
+
+//Update username Function
+const updateUsername = (username) => {
+  // Wrap the fetch operation in a promise
+  return new Promise((resolve, reject) => {
+    // Retrieve the token from local storage
+    chrome.storage.local.get("token", function (result) {
+      const storedToken = result.token;
+      if (!storedToken) {
+        // Handle the case where the token is not found
+        reject("No token stored");
+        return;
+      }
+       console.log("update username payload")
+       console.log(username)
+
+      // Make the fetch request with the retrieved token
+      fetch(
+        `${URL_Production}/api/profile/update-username`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+          body: JSON.stringify({
+            firstName: username.firstName,
+            lastName: username.lastName,
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+};
+
+//Update password Function
+const updatePassword = (passwordInputs) => {
+  // Wrap the fetch operation in a promise
+  return new Promise((resolve, reject) => {
+    // Retrieve the token from local storage
+    chrome.storage.local.get("token", function (result) {
+      const storedToken = result.token;
+      if (!storedToken) {
+        // Handle the case where the token is not found
+        reject("No token stored");
+        return;
+      }
+       console.log("update username payload")
+       console.log(passwordInputs)
+
+      // Make the fetch request with the retrieved token
+      fetch(
+        `${URL_Production}/api/profile/update-password`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${storedToken}`,
+          },
+          body: JSON.stringify({
+            password: passwordInputs.password,
+            confirmPassword: passwordInputs.confirmPassword,
+          }),
         }
       )
         .then((response) => response.json())
@@ -210,9 +369,59 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     return true;
   }
-  else if(request.action=='navigateToSubscriptionsLogPage'){
-    chrome.browserAction.setPopup({ popup: "./subscriptionsLog" });
+  else if (request.action === "sendUserInfo") {
+console.log("send user info to back-end")
+console.log("payload received ===> ", request.payload)
+sendUserInfo(request.payload)
+      .then((res) => {
+        console.log("response of send user info in background ===> ");
 
+        console.log(res);
+        return sendResponse(res);
+      })
+      .catch((error) => console.error(error));
+
+    return true;
+  }
+  //! Navigation Routes
+  else if(request.action=='navigateToSubscriptionsLogPage'){
+    chrome.browserAction.setPopup({ popup: "./subscriptionsLog.html" });
+
+  }
+  else if(request.action=='navigateToProfilePage'){
+    chrome.browserAction.setPopup({ popup: "./profile.html" });
+
+  }
+  else if(request.action=='navigateToSettingPage'){
+    chrome.browserAction.setPopup({ popup: "./setting.html" });
+
+  }
+  else if(request.action=='updateUsername'){
+    updateUsername(request.payload)
+    .then((res) => {
+  console.log("update username response (backend)....")
+  console.log(res)
+
+      return sendResponse(res);
+    })
+    .catch((error) => console.error(error));
+
+  return true;
+  }
+  else if(request.action=='updatePassword'){
+    console.log("update password (background)...")
+    console.log(request.payload)
+
+    updatePassword(request.payload)
+    .then((res) => {
+  console.log("update password response (backend)....")
+  console.log(res)
+
+      return sendResponse(res);
+    })
+    .catch((error) => console.error(error));
+
+  return true;
   }
   else if(request.action=='subscriptionsLog'){
     subscriptionsLog()
@@ -224,7 +433,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   return true;
   }
-  // sendBodyToExtension();
+  sendBodyToExtension();
 });
 
 function is_user_signed_in() {
@@ -298,7 +507,7 @@ function onTabActivated(activeInfo) {
   chrome.tabs.get(activeInfo.tabId, function (tab) {
     console.log("Activated Tab URL:", tab.url);
     // Call the function
-    // checkURL(tab.url, activeInfo.tabId);
+    checkURL(tab.url, activeInfo.tabId);
   });
 }
 
@@ -309,7 +518,7 @@ function onTabUpdated(tabId, changeInfo, tab) {
     console.log("Updated Tab:", tabId);
 
     // Call the function
-    // checkURL(tab.url, tabId);
+    checkURL(tab.url, tabId);
   }
 }
 
@@ -318,3 +527,5 @@ chrome.tabs.onActivated.addListener(onTabActivated);
 
 // Listen for when the content of a tab is updated
 chrome.tabs.onUpdated.addListener(onTabUpdated);
+
+

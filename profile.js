@@ -80,6 +80,22 @@ document.getElementById("subscriptionsLog").addEventListener("click", function (
 
   });
 });
+document.getElementById("navigateToProfilePage").addEventListener("click", function () {
+  chrome.runtime.sendMessage({ action: "navigateToProfilePage" }, function (response) {
+
+    window.location.href = "./profile.html";
+
+
+  });
+});
+document.getElementById("navigateToSettingPage").addEventListener("click", function () {
+  chrome.runtime.sendMessage({ action: "navigateToSettingPage" }, function (response) {
+
+    window.location.href = "./setting.html";
+
+
+  });
+});
 
 document.getElementById("signout").addEventListener("click", function () {
   chrome.runtime.sendMessage({ action: "signout" }, function (response) {
