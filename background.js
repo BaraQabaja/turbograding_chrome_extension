@@ -6,13 +6,12 @@ const URL_Production = "https://turbograding-api-ae8e0a55a59d.herokuapp.com";
 //Function to detect the part of URL and perform action
 function checkURL(url, tabId) {
   // Check if URL contains 'example.com'
-  console.log(" i am in checkURL, the url is ==> ",url)
-  if (url.includes('/d2l/le/activities/iterator')) {
-
+  console.log(" i am in checkURL, the url is ==> ", url);
+  if (url.includes("/d2l/le/activities/iterator")) {
     // Create turboGrading for assignments page
     //createButton("assignment");
-    chrome.tabs.executeScript(tabId, { file: 'turbograding.js' });
-  } else if (url.includes('/Grade')) {
+    chrome.tabs.executeScript(tabId, { file: "turbograding.js" });
+  } else if (url.includes("/Grade")) {
     // Create turboGrading for quiz page
 
     //For Manifest V3:
@@ -20,35 +19,28 @@ function checkURL(url, tabId) {
       target: { tabId: tabId },
       files: ['turbograding.js']
     });*/
-console.log("Go to turbograding.js")
-    chrome.tabs.executeScript(tabId, { file: './turbograding.js' });
+    console.log("Go to turbograding.js");
+    chrome.tabs.executeScript(tabId, { file: "./turbograding.js" });
 
     // createButton("quiz");
-
   }
 }
 
-
-
 //! APIs handling functions
-
 
 //Login Function
 const flip_user_status = (signIn, user_info) => {
   if (signIn) {
-    return fetch(
-      `${URL_Production}/api/auth/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user_info.loginEmail,
-          password: user_info.loginPassword,
-        }),
-      }
-    )
+    return fetch(`${URL_Production}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: user_info.loginEmail,
+        password: user_info.loginPassword,
+      }),
+    })
       .then((response) => response.json())
       .then((res) => {
         return new Promise((resolve) => {
@@ -75,16 +67,13 @@ const get_user_info = () => {
       }
 
       // Make the fetch request with the retrieved token
-      fetch(
-        `${URL_Production}/api/profile/get-personal-info`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${storedToken}`,
-          },
-        }
-      )
+      fetch(`${URL_Production}/api/profile/get-personal-info`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
         .then((response) => response.json())
         .then((res) => {
           resolve(res);
@@ -97,46 +86,41 @@ const get_user_info = () => {
 };
 
 //
-const sendUserInfo=(data)=>{
-console.log("send user info function")
-console.log("sendUserInfo received info ===> ")
-console.log(data)
+const sendUserInfo = (data) => {
+  console.log("send user info function");
+  console.log("sendUserInfo received info ===> ");
+  console.log(data);
 
- // Wrap the fetch operation in a promise
- return new Promise((resolve, reject) => {
-  // Retrieve the token from local storage
-  chrome.storage.local.get("token", function (result) {
-    const storedToken = result.token;
-    if (!storedToken) {
-      // Handle the case where the token is not found
-      reject("No token stored");
-      return;
-    }
+  // Wrap the fetch operation in a promise
+  return new Promise((resolve, reject) => {
+    // Retrieve the token from local storage
+    chrome.storage.local.get("token", function (result) {
+      const storedToken = result.token;
+      if (!storedToken) {
+        // Handle the case where the token is not found
+        reject("No token stored");
+        return;
+      }
 
-    // Make the fetch request with the retrieved token
-    fetch(
-      `${URL_Production}/api/user/grading-exam`,
-      {
+      // Make the fetch request with the retrieved token
+      fetch(`${URL_Production}/api/user/grading-exam`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${storedToken}`,
-         
         },
         body: JSON.stringify(data),
-      }
-    )
-      .then((response) => response.json())
-      .then((res) => {
-        resolve(res);
       })
-      .catch((err) => {
-        reject(err);
-      });
+        .then((response) => response.json())
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   });
-});
-}
-
+};
 
 //Signout Function
 const signout = () => {
@@ -152,16 +136,13 @@ const signout = () => {
       }
 
       // Make the fetch request with the retrieved token
-      fetch(
-        `${URL_Production}/api/auth/logout`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${storedToken}`,
-          },
-        }
-      )
+      fetch(`${URL_Production}/api/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
         .then((response) => response.json())
         .then((res) => {
           resolve(res);
@@ -172,7 +153,6 @@ const signout = () => {
     });
   });
 };
-
 
 //User subscriptions Function
 const subscriptionsLog = () => {
@@ -188,16 +168,13 @@ const subscriptionsLog = () => {
       }
 
       // Make the fetch request with the retrieved token
-      fetch(
-        `${URL_Production}/api/profile/get-user-subscriptions`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${storedToken}`,
-          },
-        }
-      )
+      fetch(`${URL_Production}/api/profile/get-user-subscriptions`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
         .then((response) => response.json())
         .then((res) => {
           resolve(res);
@@ -221,24 +198,21 @@ const updateUsername = (username) => {
         reject("No token stored");
         return;
       }
-       console.log("update username payload")
-       console.log(username)
+      console.log("update username payload");
+      console.log(username);
 
       // Make the fetch request with the retrieved token
-      fetch(
-        `${URL_Production}/api/profile/update-username`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${storedToken}`,
-          },
-          body: JSON.stringify({
-            firstName: username.firstName,
-            lastName: username.lastName,
-          }),
-        }
-      )
+      fetch(`${URL_Production}/api/profile/update-username`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+        },
+        body: JSON.stringify({
+          firstName: username.firstName,
+          lastName: username.lastName,
+        }),
+      })
         .then((response) => response.json())
         .then((res) => {
           resolve(res);
@@ -262,24 +236,21 @@ const updatePassword = (passwordInputs) => {
         reject("No token stored");
         return;
       }
-       console.log("update username payload")
-       console.log(passwordInputs)
+      console.log("update username payload");
+      console.log(passwordInputs);
 
       // Make the fetch request with the retrieved token
-      fetch(
-        `${URL_Production}/api/profile/update-password`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${storedToken}`,
-          },
-          body: JSON.stringify({
-            password: passwordInputs.password,
-            confirmPassword: passwordInputs.confirmPassword,
-          }),
-        }
-      )
+      fetch(`${URL_Production}/api/profile/update-password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${storedToken}`,
+        },
+        body: JSON.stringify({
+          password: passwordInputs.password,
+          confirmPassword: passwordInputs.confirmPassword,
+        }),
+      })
         .then((response) => response.json())
         .then((res) => {
           resolve(res);
@@ -341,6 +312,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
               chrome.browserAction.setPopup({ popup: "./signin.html" });
             }
           });
+        } else if (
+          res.data.title == "you recently logout. please login again."
+        ) {
+          chrome.browserAction.setPopup({ popup: "./signin.html" });
         }
         return sendResponse(res);
       })
@@ -351,7 +326,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .then((res) => {
         if (res.status == "success") {
           chrome.browserAction.setPopup({ popup: "./subscriptionsLog.html" });
-          console.log('subscriptions log (background) ===> ',res)
+          console.log("subscriptions log (background) ===> ", res);
         }
         return sendResponse(res);
       })
@@ -368,11 +343,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .catch((error) => console.error(error));
 
     return true;
-  }
-  else if (request.action === "sendUserInfo") {
-console.log("send user info to back-end")
-console.log("payload received ===> ", request.payload)
-sendUserInfo(request.payload)
+  } else if (request.action === "sendUserInfo") {
+    console.log("send user info to back-end");
+    console.log("payload received ===> ", request.payload);
+    sendUserInfo(request.payload)
       .then((res) => {
         console.log("response of send user info in background ===> ");
 
@@ -384,54 +358,45 @@ sendUserInfo(request.payload)
     return true;
   }
   //! Navigation Routes
-  else if(request.action=='navigateToSubscriptionsLogPage'){
+  else if (request.action == "navigateToSubscriptionsLogPage") {
     chrome.browserAction.setPopup({ popup: "./subscriptionsLog.html" });
-
-  }
-  else if(request.action=='navigateToProfilePage'){
+  } else if (request.action == "navigateToProfilePage") {
     chrome.browserAction.setPopup({ popup: "./profile.html" });
-
-  }
-  else if(request.action=='navigateToSettingPage'){
+  } else if (request.action == "navigateToSettingPage") {
     chrome.browserAction.setPopup({ popup: "./setting.html" });
-
-  }
-  else if(request.action=='updateUsername'){
+  } else if (request.action == "updateUsername") {
     updateUsername(request.payload)
-    .then((res) => {
-  console.log("update username response (backend)....")
-  console.log(res)
+      .then((res) => {
+        console.log("update username response (backend)....");
+        console.log(res);
 
-      return sendResponse(res);
-    })
-    .catch((error) => console.error(error));
+        return sendResponse(res);
+      })
+      .catch((error) => console.error(error));
 
-  return true;
-  }
-  else if(request.action=='updatePassword'){
-    console.log("update password (background)...")
-    console.log(request.payload)
+    return true;
+  } else if (request.action == "updatePassword") {
+    console.log("update password (background)...");
+    console.log(request.payload);
 
     updatePassword(request.payload)
-    .then((res) => {
-  console.log("update password response (backend)....")
-  console.log(res)
+      .then((res) => {
+        console.log("update password response (backend)....");
+        console.log(res);
 
-      return sendResponse(res);
-    })
-    .catch((error) => console.error(error));
+        return sendResponse(res);
+      })
+      .catch((error) => console.error(error));
 
-  return true;
-  }
-  else if(request.action=='subscriptionsLog'){
+    return true;
+  } else if (request.action == "subscriptionsLog") {
     subscriptionsLog()
-    .then((res) => {
-  
-      return sendResponse(res);
-    })
-    .catch((error) => console.error(error));
+      .then((res) => {
+        return sendResponse(res);
+      })
+      .catch((error) => console.error(error));
 
-  return true;
+    return true;
   }
   sendBodyToExtension();
 });
@@ -527,5 +492,3 @@ chrome.tabs.onActivated.addListener(onTabActivated);
 
 // Listen for when the content of a tab is updated
 chrome.tabs.onUpdated.addListener(onTabUpdated);
-
-

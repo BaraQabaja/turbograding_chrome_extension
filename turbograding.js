@@ -147,9 +147,23 @@ function sendBodyToExtension() {
   const exam_header_Element = document.querySelector("h1.d2l-body-standard");
   const titleAttributeValue = exam_header_Element.getAttribute("title");
   //   const student_content = document.querySelector("td.d_tl.d_tm.d_tn");
+  const dateConducted = document.getElementById('z_l');
+  const gradeElement = document.getElementById('z_bk');
+  const outOfWhatElement = document.getElementById('z_bm');
 
   // Check if the element exists
-  if (titleElement && titleAttributeValue) {
+  if (titleElement && titleAttributeValue && dateConducted && gradeElement && outOfWhatElement) {
+
+
+    const dateText = dateConducted.textContent;
+    const date_conducted= dateText.match(/(\w{3} \d{1,2}, \d{4} \d{1,2}:\d{2} [APMapm]{2})/);
+
+
+    const grad_value = gradeElement.textContent.trim();
+    const outOfWhat_value = outOfWhatElement.textContent.trim();
+
+
+
     // Extract the text content of the <title> element
     const titleText = titleElement.textContent;
     // const student_info = student_content.textContent;
@@ -194,29 +208,30 @@ function sendBodyToExtension() {
       exam_name &&
       exam_name.length > 1 &&
       studentId &&
-      studentId.length > 1
+      studentId.length > 1 &&
+      date_conducted &&
+      date_conducted.length > 1 && 
+      grad_value &&
+      outOfWhat_value
     ) {
       // The desired part is captured in the first capturing group
       const course_code_value = course_code[1];
-      const course_name_value = course_name[1];
+      const course_name_value = course_name[1].trim();;
 
       const class_code_value = class_code[1];
 
-      const university_name_value = university_name[1];
+      const university_name_value = university_name[1].trim();;
 
-      const exam_name_value = exam_name[1];
+      const exam_name_value = exam_name[1].toLowerCase();
 
       const semester_value = semester[1];
-const studentId_value=studentId[1]
-      //   alert(course_code_value); // Output: P2220
-      //   alert(semester_value); // Output: F23
-      //   alert(course_name_value); // Output: Database: SQL
-      //   alert(class_code_value); // Output: Sec3
-      //   alert(university_name_value); // Output: hytham...
-      //   alert(exam_name_value); // Output: midterm
-      //   alert(studentFirstName); // Output: studentFirstName...
-      //   alert(studentLastName); // Output: studentLastName
-      //   alert(studentId); // Output: id
+      const studentId_value=studentId[1]
+
+      const date_conducted_value=date_conducted[0]
+
+      const IntGradeValue=parseInt(grad_value, 10)
+      const IntOutOfWhat=parseInt(outOfWhat_value, 10)
+
 console.log("message sent to sendQuest funciton")
       sendQuestionToTurboGrading({
         course_code: course_code_value,
@@ -228,6 +243,10 @@ console.log("message sent to sendQuest funciton")
         studentFirstName: studentFirstName,
         studentLastName: studentLastName,
         studentId: studentId_value,
+        date_conducted:date_conducted_value,
+        grad_value:IntGradeValue,
+        outOfWhat_value:IntOutOfWhat
+
       });
     } else {
       alert("Match not found");
