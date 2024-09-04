@@ -38,14 +38,19 @@ userLastName
 
     const subscriptionEnd = document.querySelector("#subscriptionEnd");
     const subscriptionStart = document.querySelector("#subscriptionStart");
-    const subscriptionStatus = document.querySelector("#subscriptionStatus");
+    // const subscriptionStatus = document.querySelector("#subscriptionStatus");
     // Add more elements as needed
 
     // Update the content
     userNameElement.textContent = `${userInfo.userFirstName} ${userInfo.userLastName}`;
     userEmailElement.textContent = userInfo.userEmail;
 
-    planType.textContent = userInfo.planName;
+    planType.innerHTML = `${userInfo.planName} 
+    <span class='badge ${
+      userInfo.subscriptionStatus == "active" ? "bg-success" : "bg-danger"
+    }' 
+      >${userInfo.subscriptionStatus}
+    </span>`;
 
     examsLimit.textContent = userInfo.planNumberOfExamsLimit;
     examsRemain.textContent = userInfo.remaining_exams;
@@ -56,14 +61,22 @@ userLastName
     questionsLimit.textContent = userInfo.planNumberOfQuestionsLimit;
     questionsRemain.textContent = userInfo.remaining_questions;
 
-    subscriptionEnd.textContent = userInfo.subscriptionEndDate;
-    subscriptionStart.textContent = userInfo.subscriptionStartDate;
-    subscriptionStatus.innerHTML = ` <strong>Subscription Status: </strong>
-    <span class='badge ${
-      userInfo.subscriptionStatus == "active" ? "bg-success" : "bg-danger"
-    }' 
-      >${userInfo.subscriptionStatus}
-    </span>`;
+    subscriptionEnd.textContent = `${
+      userInfo.subscriptionEndDate == "5138-11-16"
+        ? "-"
+        : userInfo.subscriptionEndDate
+    }`;
+    subscriptionStart.textContent = `${
+      userInfo.subscriptionStartDate == "1970-01-01"
+        ? "-"
+        : userInfo.subscriptionStartDate
+    }`;
+    // subscriptionStatus.innerHTML = ` <strong>Subscription Status: </strong>
+    // <span class='badge ${
+    //   userInfo.subscriptionStatus == "active" ? "bg-success" : "bg-danger"
+    // }'
+    //   >${userInfo.subscriptionStatus}
+    // </span>`;
     //
   } else {
     let errorDiv = document.getElementById("error");
@@ -113,7 +126,6 @@ document.getElementById("signout").addEventListener("click", function () {
       response.data.title === "you recently logout. please login again."
     ) {
       window.location.href = "./signin.html";
-
     }
   });
 });
